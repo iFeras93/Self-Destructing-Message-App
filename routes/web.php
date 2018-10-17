@@ -18,3 +18,6 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/add_new_message', 'MessageController@add_new_message_show_form');
+Route::post('/add_new_message', 'MessageController@add_new_message_post_form');
+Route::get('/message/{hash}', 'MessageController@read_message');

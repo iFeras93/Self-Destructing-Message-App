@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Message;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+
     /**
      * Create a new controller instance.
      *
@@ -23,6 +25,15 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+
+        // This for get messages list added by specific user
+        // Feras Shaer
+        $messages = Message::where('user_id', \Auth::user()->id)->get();
+
+
+        return view('home', compact(['messages']));
+
     }
+
+
 }

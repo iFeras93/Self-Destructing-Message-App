@@ -18,7 +18,12 @@ class CreateMessagesTable extends Migration
             $table->string('hash')->unique();
             $table->string('title');
             $table->longText('content');
+            $table->integer('user_id')->unsigned();
             $table->timestamps();
+
+            $table->foreign('user_id')
+                ->references('id')->on('users')
+                ->onDelete('cascade');
         });
     }
 

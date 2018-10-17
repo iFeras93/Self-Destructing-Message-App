@@ -18,7 +18,7 @@
                             <Strong>Welcome</Strong> {{ \Illuminate\Support\Facades\Auth::user()->name }}</p>
 
                         <p>
-                            <a href="#" class="btn btn-success">create new message</a>
+                            <a href="{{ url('/add_new_message') }}" class="btn btn-success">create new message</a>
                         </p>
 
                         <p><span class="badge badge-info">List of unread message: </span></p>
@@ -28,20 +28,51 @@
                                 <th>Title</th>
                                 <th>Message</th>
                                 <th>Create At</th>
+                                <th>Action</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr>
-                                <td>John</td>
-                                <td>Doe</td>
-                                <td>john@example.com</td>
-                            </tr>
 
-                            </tbody>
+                            @if($messages->count() > 0)
+                                <tbody>
+
+                                @foreach($messages as $message)
+                                    <tr>
+                                        <td>{{ $message->title }}</td>
+                                        <td>{{ str_limit($message->content,20) }}</td>
+                                        <td>{{ $message->created_at->format('Y-m-d') }}</td>
+
+                                        <td>
+                                            <!-- Trigger -->
+                                            <button class="btn btn-sm btn-secondary"
+                                                    onclick="copyText()"
+                                                    data-id="{{ $message->id }}"
+                                                    data-clipboard-text="{{ url('/message/'.$message->hash) }}">
+                                                Copy link
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            @else
+                                <h2>No Record</h2>
+                            @endif
                         </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+@endsection
+@section('extraJs')
+    <script type="text/javascript">
+        var clipboard = new ClipboardJS('.btn');
+        clipboard.on('success', function (e) {
+           alert('Link Copied')
+        });
+
+        clipboard.on('error', function (e) {
+            console.error('Action:', e.action);
+            console.error('Trigger:', e.trigger);
+        });
+    </script>
 @endsection
